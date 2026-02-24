@@ -7,19 +7,24 @@ from datetime import datetime
 import threading
 
 
-import firebase_admin
-from firebase_admin import credentials, storage
+import pyrebase
 
-# --- Inicializar Firebase (una sola vez) ---
-cred = credentials.Certificate("/home/perres/vision/vis-p1-firebase-adminsdk-fbsvc-a4a2445ca6.json")
-firebase_admin.initialize_app(cred, {'storageBucket': 'gs://vis-p1.firebasestorage.app'})
+config = {
+    "apiKey": "AIzaSyD82bDGL9F2RvjQDmdAfniqruYyfxgzUqI",
+    "authDomain": "vis-p1.firebaseapp.com",
+    "databaseURL": "https://vis-p1-default-rtdb.firebaseio.com",
+    "projectId": "vis-p1",
+    "storageBucket": "vis-p1.firebasestorage.app",
+    "messagingSenderId": "716021805843",
+    "appId": "1:716021805843:web:9a826b64241264fe5ea0e6"
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 
 def upload_image(local_path, remote_filename):
-    """Corre en hilo separado para no bloquear el robot"""
     try:
-        bucket = storage.bucket()
-        blob = bucket.blob(f"detecciones/{remote_filename}")
-        blob.upload_from_filename(local_path)
+        storage.child(f"detecciones/{remote_filename}").put(local_path)
         print(f"[CLOUD] Subido: {remote_filename}")
     except Exception as e:
         print(f"[CLOUD ERROR] {e}")
