@@ -4,7 +4,7 @@ import os
 import time
 
 # ================= CONFIG =================
-TEMPLATE_PATH = r"rasp/WhatsApp Image 2026-02-19 at 15.17.27.jpeg"
+TEMPLATE_PATH = r"pza.png"
 
 CAM_INDEX = 0
 FRAME_W, FRAME_H = 640, 480
